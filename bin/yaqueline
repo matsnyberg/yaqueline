@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require 'yaqueline'
+Yaqueline.run

@@ -23,4 +23,5 @@ group :development do
   gem 'thin' # or whatever I end up with
   gem 'minitest'
   gem 'test-unit'
+  gem 'shoulda'
 end

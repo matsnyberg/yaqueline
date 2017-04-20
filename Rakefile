@@ -19,7 +19,7 @@ Juwelier::Tasks.new do |gem|
   gem.license = "MIT"
   gem.summary = %Q{TODO: one-line summary of your gem}
   gem.description = %Q{TODO: longer description of your gem}
-  gem.email = "info@jollobajano.com"
+  gem.email = "mats@matsnyberg.com"
   gem.authors = ["Mats Nyberg"]
 
   # dependencies defined in Gemfile
@@ -29,7 +29,7 @@ Juwelier::RubygemsDotOrgTasks.new
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
   test.libs << 'lib' << 'test'
-  test.pattern = 'test/**/test_*.rb'
+  test.pattern = 'test/**/*_test.rb'
   test.verbose = true
 end
 

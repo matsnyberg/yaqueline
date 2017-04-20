@@ -1,0 +1,6 @@
+# defaults for Yaqueline
+config_file: _config.yml
+layouts_dir: _layouts
+includes_dir: _includes
+scss_dir: _scss
+css_dir: css

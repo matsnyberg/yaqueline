@@ -1,0 +1,52 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+ROOT = File.join(File.dirname(__FILE__), '..')
+BLOG = File.join(File.dirname(__FILE__), '../blog')
+$LOAD_PATH.unshift File.join(File.dirname(__FILE__), '../lib')
+$LOAD_PATH.unshift File.join(File.dirname(__FILE__), '../vendor/bundle')
+STDOUT.sync = true
+WORKINGDIR = Dir.pwd
+
+require 'rubygems'
+require 'mercenary'
+require 'yaqueline'
+require 'yaqueline/configuration'
+
+
+begin
+  Mercenary.program(:project) do |p|
+    p.version '1.0.0'
+    p.description 'Command line utility for the Yaqueline project development'
+    p.syntax "project <subcommand> [options]"
+
+    p.command(:new) do |c|
+      c.syntax "new PATH"
+      c.description "Runs yageuline new"
+
+      c.action do |args, options|
+        path = args[1]
+        Dir.chdir ROOT
+        puts "Init blog in #{path}"
+        Yaqueline.run ['new', ARGV[0]]
+      end
+    end
+
+    p.command(:build) do |c|
+      c.syntax "build PATH"
+      c.description "Builds your Yaqueline site in PATH"
+
+      c.action do |_, options|
+        Dir.chdir BLOG
+        puts "In #{Dir.pwd}"
+        Yaqueline.run ['build']
+      end
+    end
+
+    p.default_command(:build)
+  end
+rescue => error
+  puts "Error: " + error.message
+  puts error.backtrace
+end
+
+Dir.chdir WORKINGDIR
