@@ -6,7 +6,6 @@ class TestDocument < Test::Unit::TestCase
   should "be able to get a one-word key from file path" do
     document = Yaqueline::Document.new File.join(File.dirname(__FILE__), 'annotatedfile1.html')
     key = document.path2key 'some/path/to/file.html'
-    puts "KEY "#{key}""
     assert 'file' == key, 'key should be "file"'
   end
 

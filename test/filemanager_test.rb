@@ -16,7 +16,6 @@ class TestFileManager < Test::Unit::TestCase
 
   should 'be able to render a chain of templates' do
     filemanager = Yaqueline::FileManager.new SITE, CONFIGURATION
-    puts filemanager.template('default')
     assert !(filemanager.template('default').nil?), 'default.html should be available'
   end
 

@@ -21,14 +21,11 @@ module Yaqueline
       css = File.join(site_root, config.css_dir)
       
       files(site_root).sort.each do |f|
-        puts "filemanager: #{f}"
         if File.directory? f
-          #puts :dir
         elsif f == config_file
           @config = f
         elsif f.start_with? layouts
           template = Template.new f
-          puts "key #{template.key}"
           @templates[template.key] = template
         elsif f.start_with? includes
           partial = Partial.new f
@@ -43,7 +40,6 @@ module Yaqueline
           @others << f
         end
       end
-      puts @templates
     end
 
     def partial name

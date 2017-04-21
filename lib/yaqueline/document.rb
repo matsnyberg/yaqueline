@@ -23,31 +23,17 @@ module Yaqueline
       @source.send(method, *args, &block)
     end
 
-    def render(rendered=nil)
+    def render rendered = nil
       unless rendered.nil?
         @source.content = rendered
       end
-      rendered = ERB.new(@source.body).result(binding)
+      rendered = ERB.new(@body).result(binding)
       unless @source.layout.nil?
         template = Yaqueline::TemplateManager.template layout
         rendered = template.render rendered
       end
       return rendered
     end
-
-    def to_s
-      @source.to_s
-    end
-
-    def path2key path
-      key = %r{^.*\/(\w+)\.\w+$}.match(path).captures[0]
-      puts "path2key: #{key} #{path}"
-      key
-    end
-
-
-    private
-
 
     def parse_file path
       file_content = IO.read(path)
@@ -62,6 +48,14 @@ module Yaqueline
         @body = file_content
       end
       return result
+    end
+
+    def path2key path
+      %r{^.*\/(\w+)\.\w+$}.match(path).captures[0]
+    end
+
+    def to_s
+      @source.to_s
     end
 
 
