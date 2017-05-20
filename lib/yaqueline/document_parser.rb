@@ -8,6 +8,7 @@ module Yaqueline
 
       def parse path
         @@root = File.absolute_path Yaqueline::Configuration.get(:source)
+        puts "root: #{@@root}"
         document = Yaqueline::Document.new
         document.path = relativize_path path
         #path = File.absolute_path path
@@ -26,9 +27,10 @@ module Yaqueline
       end
 
       def relativize_path path
-        path = File.absolute_path path
-        raise ArgumentError.new("#{path} is not within #{@@root}") unless path.slice @@root
+        puts "relativize: #{path}"
+        #raise ArgumentError.new("#{path} is not within #{@@root}") unless path.slice @@root
         path.slice!("#{@@root}/")
+        puts "relativized: #{path}"
         path
       end
 

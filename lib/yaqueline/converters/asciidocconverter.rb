@@ -1,6 +1,6 @@
 # encoding: UTF-8
 require 'asciidoctor'
-require 'yaqueline/build/converters/asciidoc/htmlconverter'
+require 'yaqueline/converters/asciidoc/htmlconverter'
 
 module Yaqueline
   module Converters

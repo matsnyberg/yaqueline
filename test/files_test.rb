@@ -8,7 +8,7 @@ require 'yaqueline/files'
 class FilesTest < Test::Unit::TestCase
   context "files" do
     setup do
-      Yaqueline::Configuration.init [], source: 'test/fixtures/blog'
+      Yaqueline::Configuration.init [], source: 'test/fixtures/blog', config: 'test/fixtures/config-configuration_test.yml'
     end
     should "be able to collect files in a Yaqueline repo correctly" do
       Yaqueline::Files.collect_files

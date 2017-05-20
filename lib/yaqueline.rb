@@ -20,7 +20,7 @@ module Yaqueline
   require 'yaqueline/configuration'
   require 'yaqueline/command'
   require_all 'yaqueline/commands'
-  #require 'yaqueline/build/converter'
-  #require_all 'yaqueline/build/converters'
+  require 'yaqueline/converter'
+  require_all 'yaqueline/converters'
   
 end

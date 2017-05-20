@@ -1,4 +1,5 @@
 require 'yaqueline/configuration'
+require 'yaqueline/document_parser'
 module Yaqueline
 
   class Files
@@ -37,8 +38,8 @@ module Yaqueline
           elsif f.start_with?(scss)
             doc = Document.new f
             @@scss[doc.key] = doc
-          elsif converter = Yaqueline::Build::Converter.find_converter_for(f)
-            document = Document.new f
+          elsif converter = Yaqueline::Converter.find_converter_for(f)
+            document = DocumentParser.parse f
             document.content = converter.convert document
             @@converted << document
           else
