@@ -1,0 +1,5 @@
+= The _plugins directory
+
+Put site specific code in here. All Ruby files in 
+this directory will be `required` initializing 
+Yaqueline.

@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+lib = File.join File.dirname(__FILE__), '..', 'lib'
+$LOAD_PATH.unshift lib
+require 'yaqueline'
+require "mercenary"
+
+begin
+  Mercenary.program(:yaqueline) do |p|
+    p.version Yaqueline::VERSION
+    p.description "Yaqueline, like Jekyll, is a blog-aware, static site generator in Ruby"
+    p.syntax "yaqueline <subcommand> [options]"
+
+    p.option :config, "-c", "--config FILE", String, "Config file (defaults to ./_config.yml)"
+    p.option :source, "-s", "--source [DIR]", String, "Source directory (defaults to ./)"
+    p.option :dest, "-d", "--destination [DIR]", String, "Destination directory (defaults to ./_site)"
+    p.option :plugins, "-p", "--plugins PLUGINS_DIR1[,PLUGINS_DIR2[,...]]", Array, "Plugins directory (defaults to ./_plugins)"
+    p.option :layouts, '-l', "--layouts DIR", String, "Layouts directory (defaults to ./_layouts)"
+
+    Yaqueline::Command.commands.each do |c|
+      c.init_with_program p
+    end
+    p.default_command(:help)
+  end
+rescue => error
+  puts "[Command] Error: " + error.message
+  puts error.backtrace
+end
+

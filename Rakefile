@@ -27,7 +27,7 @@ Juwelier::RubygemsDotOrgTasks.new
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
   test.libs << 'lib' << 'test'
-  test.pattern = 'test/**/test_*.rb'
+  test.pattern = 'test/**/*_test.rb'
   test.verbose = true
 end
 
@@ -39,5 +39,14 @@ end
 
 task :default => :test
 
-require 'yard'
-YARD::Rake::YardocTask.new
+require 'rdoc/task'
+
+RDoc::Task.new do |rdoc|
+  rdoc.main = "1README.rdoc"
+  rdoc.rdoc_files.include(
+    "1README.rdoc",
+    "CHANGELOG.rdoc",
+    "ISSUES.rdoc",
+    "LICENSE.txt",
+    "lib/**/*.rb")
+end
