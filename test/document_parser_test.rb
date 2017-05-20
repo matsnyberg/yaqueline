@@ -22,7 +22,6 @@ class DocumentParserTest < Test::Unit::TestCase
     should "be able to parse documents" do
       path = File.absolute_path 'test/fixtures/documents/document1.html'
       document = Yaqueline::DocumentParser.parse path
-      puts document.to_h
     end
   end
 end
