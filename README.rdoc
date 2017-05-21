@@ -34,5 +34,4 @@ https://github.com/jekyll/jekyll. Check it out.
 
 == Copyright
 
-Copyright (c) 2017 Mats Nyberg. See LICENSE.txt[LICENSE.txt](../blob/master/LICENSE.txt) for
-further details.
+Copyright (c) 2017 Mats Nyberg. See LICENSE.txt for further details.
