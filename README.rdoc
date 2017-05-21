@@ -7,6 +7,8 @@ functionality and provide a platform to extend from.
 
 == Getting started
 
+It is not deployed at RubyGems.org yet, but when it is, then
+
     $ gem install yaqueline
     $ yaqueline new myblog
     $ cd myblog
