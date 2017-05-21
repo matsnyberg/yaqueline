@@ -42,7 +42,7 @@ task :default => :test
 require 'rdoc/task'
 
 RDoc::Task.new do |rdoc|
-  rdoc.main = "1README.rdoc"
+  rdoc.main = "README.rdoc"
   rdoc.rdoc_files.include(
     "README.rdoc",
     "CHANGELOG.rdoc",

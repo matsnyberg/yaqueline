@@ -1,8 +1,8 @@
 = Yaqueline
 
-Yaqueline is a document/blog formatting tool. It is a reversed
-engineered from Jekyll to give the basic functionality and provide a
-platform to extend from.
+Yaqueline is a document/blog formatting tool. It is a reverse
+engineered wannabe of Jekyll. In time, it should give some basic
+functionality and provide a platform to extend from.
 
 
 == Getting started
