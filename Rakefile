@@ -44,7 +44,7 @@ require 'rdoc/task'
 RDoc::Task.new do |rdoc|
   rdoc.main = "1README.rdoc"
   rdoc.rdoc_files.include(
-    "1README.rdoc",
+    "README.rdoc",
     "CHANGELOG.rdoc",
     "ISSUES.rdoc",
     "LICENSE.txt",
