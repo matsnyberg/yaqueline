@@ -4,17 +4,18 @@ module Yaqueline
 
   class Files
     class << self
+      attr_accessor :source, :config, :templates, :partials, :css, :scss, :posts, :pages, :as_is
       
       def collect_files
-        @@source = Configuration.get(:source)
-        @@config = Configuration.get(:config)
-        @@templates = Hash.new
-        @@partials = Hash.new
-        @@css = Hash.new
-        @@scss = Hash.new
-        @@posts = Array.new
-        @@pages = Array.new
-        @@as_is = Array.new
+        Files.source = Configuration.get(:source)
+        Files.config = Configuration.get(:config)
+        Files.templates = Hash.new
+        Files.partials = Hash.new
+        Files.css = Hash.new
+        Files.scss = Hash.new
+        Files.posts = Array.new
+        Files.pages = Array.new
+        Files.as_is = Array.new
         
         config_file = Configuration.get(:config)
         layouts = Configuration.get(:layouts)
@@ -23,33 +24,33 @@ module Yaqueline
         css = Configuration.get(:css)
         plugins = Configuration.get(:plugins)
         
-        files(@@source).sort.each do |f|
+        files(Files.source).sort.each do |f|
           if File.directory? f
           elsif f == config_file
-            @@config = f
+            Files.config = f
           elsif under? f, layouts
             template = DocumentParser.parse f
-            @@templates[template.key] = template
+            Files.templates[template.key] = template
           elsif under? f, includes
             partial = DocumentParser.parse f
-            @@partials[partial.key] = partial
+            Files.partials[partial.key] = partial
           elsif under? f, css
             doc = DocumentParser.parse f 
-            @@css[doc.key] = doc
+            Files.css[doc.key] = doc
           elsif under? f, scss
             doc = DocumentParser.parse f
-            @@scss[doc.key] = doc
+            Files.scss[doc.key] = doc
           #elsif under? f, plugins
           elsif converter = Converter.find_converter_for(f)
             document = DocumentParser.parse f
             document.content = converter.convert document
             if f =~ /_posts/
-              @@posts << document
+              Files.posts << document
             else
-              @@pages << document
+              Files.pages << document
             end
           else
-            @@as_is << f
+            Files.as_is << f
           end
         end
       end
@@ -59,7 +60,7 @@ module Yaqueline
       end
 
       def absolute_path f
-        if f.to_s =~ /^\// then f else File.join(@@source, f) end
+        if f.to_s =~ /^\// then f else File.join(Files.source, f) end
       end
 
       def files source
@@ -72,34 +73,6 @@ module Yaqueline
         return true if f =~ /(\~|\.bak)$/
         return true if f =~ /_plugins/
         false
-      end
-
-      def templates
-        @@templates
-      end
-
-      def partials
-        @@partials
-      end
-
-      def css
-        @@css
-      end
-
-      def scss
-        @@scss
-      end
-
-      def posts
-        @@posts
-      end
-
-      def pages
-        @@pages
-      end
-
-      def as_is
-        @@as_is
       end
 
     end # class << self
