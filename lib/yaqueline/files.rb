@@ -4,48 +4,62 @@ module Yaqueline
 
   class Files
     class << self
-
       
       def collect_files
-        source = Yaqueline::Configuration.get(:source)
-        @@config = Yaqueline::Configuration.get(:config)
+        @@source = Configuration.get(:source)
+        @@config = Configuration.get(:config)
         @@templates = Hash.new
         @@partials = Hash.new
         @@css = Hash.new
         @@scss = Hash.new
-        @@converted = Array.new
+        @@posts = Array.new
+        @@pages = Array.new
         @@as_is = Array.new
-
-        config_file = Yaqueline::Configuration.get(:config)
-        layouts = Yaqueline::Configuration.get(:layouts)
-        includes = Yaqueline::Configuration.get(:includes)
-        scss = Yaqueline::Configuration.get(:scss)
-        css = Yaqueline::Configuration.get(:css)
         
-        files(source).sort.each do |f|
+        config_file = Configuration.get(:config)
+        layouts = Configuration.get(:layouts)
+        includes = Configuration.get(:includes)
+        scss = Configuration.get(:scss)
+        css = Configuration.get(:css)
+        plugins = Configuration.get(:plugins)
+        
+        files(@@source).sort.each do |f|
           if File.directory? f
           elsif f == config_file
             @@config = f
-          elsif f.start_with? layouts
-            template = Template.new f
+          elsif under? f, layouts
+            template = DocumentParser.parse f
             @@templates[template.key] = template
-          elsif f.start_with? includes
-            partial = Partial.new f
+          elsif under? f, includes
+            partial = DocumentParser.parse f
             @@partials[partial.key] = partial
-          elsif f.start_with?(css)
-            doc = Document.new f 
+          elsif under? f, css
+            doc = DocumentParser.parse f 
             @@css[doc.key] = doc
-          elsif f.start_with?(scss)
-            doc = Document.new f
+          elsif under? f, scss
+            doc = DocumentParser.parse f
             @@scss[doc.key] = doc
-          elsif converter = Yaqueline::Converter.find_converter_for(f)
+          #elsif under? f, plugins
+          elsif converter = Converter.find_converter_for(f)
             document = DocumentParser.parse f
             document.content = converter.convert document
-            @@converted << document
+            if f =~ /_posts/
+              @@posts << document
+            else
+              @@pages << document
+            end
           else
             @@as_is << f
           end
         end
+      end
+
+      def under? f, dir
+        absolute_path(f).start_with? dir
+      end
+
+      def absolute_path f
+        if f.to_s =~ /^\// then f else File.join(@@source, f) end
       end
 
       def files source
@@ -56,8 +70,10 @@ module Yaqueline
       
       def reject_file? f
         return true if f =~ /(\~|\.bak)$/
+        return true if f =~ /_plugins/
+        false
       end
-      
+
       def templates
         @@templates
       end
@@ -74,8 +90,12 @@ module Yaqueline
         @@scss
       end
 
-      def converted
-        @@converted
+      def posts
+        @@posts
+      end
+
+      def pages
+        @@pages
       end
 
       def as_is
