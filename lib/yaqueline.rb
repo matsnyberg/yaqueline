@@ -10,9 +10,7 @@ def require_all(path)
   end
 end
 
-
 module Yaqueline
-
   require "safe_yaml"
   SafeYAML::OPTIONS[:default_mode] = :safe
   
@@ -23,4 +21,8 @@ module Yaqueline
   require 'yaqueline/converter'
   require_all 'yaqueline/converters'
   
+  require 'yaqueline/document'
+  require 'yaqueline/document_parser'
+  require 'yaqueline/files'
+  require 'yaqueline/renderer'
 end
