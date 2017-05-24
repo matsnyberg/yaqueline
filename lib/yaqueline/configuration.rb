@@ -1,3 +1,5 @@
+require 'safe_yaml'
+SafeYAML::OPTIONS[:default_mode] = :safe
 module Yaqueline
   class Configuration
 
@@ -13,17 +15,14 @@ module Yaqueline
     # Default config values
     DEFAULTS = {
       :source               => Dir.pwd,
-      :dest                 => File.join(Dir.pwd, '_site'),
-      :config               => File.join(Dir.pwd, '_config.yml'),
-      :layouts              => File.join(Dir.pwd, '_layouts'),
-      :includes             => File.join(Dir.pwd, '_includes'),
-      :plugins              => File.join(Dir.pwd, '_plugins'),
-      :scss                 => File.join(Dir.pwd, '_scss'),
-      :css                  => File.join(Dir.pwd, 'css')
+      :dest                 => '_site',
+      :config               => '_config.yml',
+      :layouts              => '_layouts',
+      :includes             => '_includes',
+      :plugins              => '_plugins',
+      :scss                 => '_scss',
+      :css                  => 'css'
     }
-
-    def initialize args, options
-    end
 
     class << self
 
@@ -53,6 +52,10 @@ module Yaqueline
       
       def get(property)
         @@options[property] || @@config[property] || DEFAULTS[property]
+      end
+
+      def absolute_path(property)
+        File.absolute_path(File.join(get(:source), get(property)))
       end
 
       def args

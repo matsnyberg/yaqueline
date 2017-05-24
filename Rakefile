@@ -24,11 +24,24 @@ Juwelier::Tasks.new do |gem|
   # dependencies defined in Gemfile
 end
 Juwelier::RubygemsDotOrgTasks.new
+
 require 'rake/testtask'
-Rake::TestTask.new(:test) do |test|
+desc %q{Run 'test/unit' tests in test/}
+Rake::TestTask.new(:unittest) do |test|
   test.libs << 'lib' << 'test'
   test.pattern = 'test/**/*_test.rb'
   test.verbose = true
+end
+
+begin
+  require 'rspec/core/rake_task'
+  desc %q{Run specifications in spec/}
+  RSpec::Core::RakeTask.new(:spec) do |t|
+    t.rspec_opts = "--require spec_helper --color --format doc"
+    t.pattern = 'spec/**/*_spec.rb'
+  end
+rescue LoadError
+  raise 'no rspec available'
 end
 
 desc "Code coverage detail"
@@ -36,6 +49,9 @@ task :simplecov do
   ENV['COVERAGE'] = "true"
   Rake::Task['test'].execute
 end
+
+desc 'Run both specs and "unit tests"'
+task :test => [:unittest, :spec]
 
 task :default => :test
 
