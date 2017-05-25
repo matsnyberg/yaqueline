@@ -4,29 +4,32 @@ module Yaqueline
   class Files
     class << self
       attr_accessor :source, :config, :templates, :partials, :css, :scss, :posts, :pages, :as_is
-      
+
       def collect_files
         Files.source = Configuration.get(:source)
         Files.config = Configuration.get(:config)
         Files.templates = Hash.new
         Files.partials = Hash.new
-        Files.css = Hash.new
-        Files.scss = Hash.new
+        Files.css = Array.new
+        Files.scss = Array.new
         Files.posts = Array.new
         Files.pages = Array.new
         Files.as_is = Array.new
-        
-        config_file = Configuration.get(:config)
-        layouts_dir = Configuration.get(:layouts)
-        includes_dir = Configuration.get(:includes)
-        scss_dir = Configuration.get(:scss)
-        css_dir = Configuration.get(:css)
-        plugins_dir = Configuration.get(:plugins)
+
+        config_file = Configuration.absolute_path(:config)
+        dest_dir = Configuration.absolute_path(:dest)
+        layouts_dir = Configuration.absolute_path(:layouts)
+        includes_dir = Configuration.absolute_path(:includes)
+        scss_dir = Configuration.absolute_path(:scss)
+        css_dir = Configuration.absolute_path(:css)
+        plugins_dir = Configuration.absolute_path(:plugins)
 
         begin
           files(Files.source).sort.each do |f|
             if f == config_file
               config = f
+            elsif under? f, plugins_dir
+            elsif under? f, dest_dir
             elsif under? f, layouts_dir
               template = DocumentParser.parse f
               templates[template.key] = template
@@ -34,12 +37,9 @@ module Yaqueline
               partial = DocumentParser.parse f
               partials[partial.key] = partial
             elsif under? f, css_dir
-              doc = DocumentParser.parse f 
-              css[doc.key] = doc
+              css << f if f.to_s.end_with?('.css')
+              scss << f if f.to_s.end_with?('.scss')
             elsif under? f, scss_dir
-              doc = DocumentParser.parse f
-              puts doc.key, doc
-              scss[doc.key] = doc
             elsif converter = Converter.find_converter_for(f)
               document = DocumentParser.parse f
               document.content = converter.convert document
@@ -58,6 +58,10 @@ module Yaqueline
         end
       end
 
+      def template key
+        templates[key]
+      end
+
       def under? f, dir
         absolute_path(f).start_with? dir
       end
@@ -71,7 +75,7 @@ module Yaqueline
                    .reject { |f| reject_file? f }
                    .collect { |f|  f.to_s.sub("#{source}/", '')}
       end
-      
+
       def reject_file? f
         return true if File.directory? f
         return true if f =~ /(\~|\.bak)$/

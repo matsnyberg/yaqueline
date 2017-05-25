@@ -7,10 +7,12 @@ require 'yaqueline/files'
 
 module Yaqueline
   Tilt.prefer Tilt::ErubisTemplate
+
   class Renderer
+    @@xsl = Nokogiri::XSLT(File.read(File.join(File.dirname(__FILE__), 'pretty-print.xsl')))
     class << self
 
-      
+
       def render document
         erubis = Erubis::Eruby.new(document.content, :trim=>true)
         content = erubis.result(context(document.content, document.frontmatter))
@@ -22,7 +24,7 @@ module Yaqueline
           content = erubis.result(context(content, document.frontmatter, template.frontmatter))
           current = template
         end
-        content
+        pretty_print content
       end
 
       def context content, page, layout=nil
@@ -45,12 +47,22 @@ module Yaqueline
         end
         return html
       end
-      
+
       def _body_content html
         if html =~ /<body>/
           return html.match(%r{(?<=<body>).*(?=</body>)}).to_s
         end
         html
+      end
+
+      def pretty_print html
+        begin
+          doc = Nokogiri::HTML(html)
+          @@xsl.apply_to(doc).to_s
+        rescue => error
+          STDERR.puts "[Build] Error: " + error.message
+          STDERR.puts error.backtrace
+        end
       end
 
     end # class << self

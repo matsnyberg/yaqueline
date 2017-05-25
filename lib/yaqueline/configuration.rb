@@ -55,7 +55,9 @@ module Yaqueline
       end
 
       def absolute_path(property)
-        File.absolute_path(File.join(get(:source), get(property)))
+        value = get(property)
+        return nil unless value
+        File.absolute_path(File.join(get(:source), value))
       end
 
       def args

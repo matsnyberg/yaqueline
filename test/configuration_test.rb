@@ -16,7 +16,7 @@ class TestConfiguration < Test::Unit::TestCase
     end
     
     should "return '_includes' for :includes from DEFAULTS" do
-      assert_equal File.join(Dir.pwd, '_includes'), Yaqueline::Configuration.get(:includes)
+      assert_equal '_includes', Yaqueline::Configuration.get(:includes)
     end
   end
 end

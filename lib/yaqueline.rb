@@ -20,6 +20,10 @@ module Yaqueline
   require_all 'yaqueline/commands'
   require 'yaqueline/converter'
   require_all 'yaqueline/converters'
+  require 'yaqueline/publisher'
+  require_all 'yaqueline/publishers'
+  require 'yaqueline/watcher'
+  require_all 'yaqueline/watchers'
   
   require 'yaqueline/document'
   require 'yaqueline/document_parser'
