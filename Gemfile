@@ -13,7 +13,7 @@ gem 'sass'
 gem 'asciidoctor'
 gem 'tilt'
 gem 'erubis'
-gem 'thin' # or whatever I end up with
+gem 'webrick' # or whatever I end up with
 gem 'listen', '~> 3.0'
 
 # Add dependencies to develop your gem here.

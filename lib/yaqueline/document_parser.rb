@@ -2,7 +2,6 @@
 require 'yaqueline/configuration'
 require 'yaqueline/document'
 module Yaqueline
-
   class DocumentParser
     class << self
 
@@ -50,5 +49,4 @@ module Yaqueline
 
     end # class << self
   end # class
-
 end

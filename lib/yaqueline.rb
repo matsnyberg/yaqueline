@@ -13,7 +13,7 @@ end
 module Yaqueline
   require "safe_yaml"
   SafeYAML::OPTIONS[:default_mode] = :safe
-  
+
   require 'yaqueline/version'
   require 'yaqueline/configuration'
   require 'yaqueline/command'
@@ -24,7 +24,7 @@ module Yaqueline
   require_all 'yaqueline/publishers'
   require 'yaqueline/watcher'
   require_all 'yaqueline/watchers'
-  
+
   require 'yaqueline/document'
   require 'yaqueline/document_parser'
   require 'yaqueline/files'

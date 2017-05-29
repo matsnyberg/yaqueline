@@ -1,4 +1,5 @@
 require 'listen'
+require 'yaqueline/builder'
 module Yaqueline
   class Watcher
     class << self
@@ -7,22 +8,25 @@ module Yaqueline
 
       def inherited(subclass)
         Watcher.watchers << subclass
-        puts "registered #{subclass}"
       end
 
-      def start
+      def start(asleep = true)
         source = Configuration.get(:source)
         dest = Regexp.new(Configuration.get(:dest))
         Builder.build_all
-        listener = Listen.to(source, only: files(source), ignore: dest) do |modified, added, removed|
-          Watcher.watchers.each do |w|
-            w.on_change(modified, added, removed)
-          end
+        #listener = Listen.to(source, only: files(source), ignore: dest) do |modified, added, removed|
+        listener = Listen.to(source, ignore: dest) do |modified, added, removed|
+          Builder.build_all
+          #Watcher.watchers.each do |w|
+          #  w.on_change(modified, added, removed)
+          #end
         end
         listener.start # not blocking
-        begin
-          sleep
-        rescue => e
+        if asleep
+          begin
+            sleep
+          rescue => e
+          end
         end
       end
 
@@ -41,7 +45,7 @@ module Yaqueline
         false
       end
 
-        
+
     end # class << self
   end # class
 end # module

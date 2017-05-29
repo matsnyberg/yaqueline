@@ -31,7 +31,12 @@ module Yaqueline
         result = Hash.new
         result[:content] = content
         result[:page] = page
-        result[:layout] = layout
+        result[:post] = page
+        result[:layout] = layout        
+        site = Hash.new
+        site[:posts] = Files.posts
+        site[:pages] = Files.pages
+        result[:site] = site
         result
       end
 
@@ -46,13 +51,6 @@ module Yaqueline
           return result
         end
         return html
-      end
-
-      def _body_content html
-        if html =~ /<body>/
-          return html.match(%r{(?<=<body>).*(?=</body>)}).to_s
-        end
-        html
       end
 
       def pretty_print html

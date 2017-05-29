@@ -9,7 +9,7 @@ module Yaqueline
     class << self
 
       def build_all
-        puts 'Yaqueline::Builder.build_all'
+        puts('Yaqueline::Builder.build_all')
         load_plugins
         Files.collect_files
         build_stylesheets
@@ -19,22 +19,17 @@ module Yaqueline
       end
 
       def load_plugins
-        Dir[File.join(Configuration.absolute_path(:plugins), '**', '*.rb')].each do |f|
-          require f
-        end
+        Dir[File.join(Configuration.absolute_path(:plugins), '**', '*.rb')].each { |f| require(f) }
       end
 
       def build_stylesheets
-        puts "render stylesheets"
-        Files.css.each do |p|
-          copy_css p
-        end
+        Files.css.each { |p|  copy_css(p) }
         Files.scss.each do |p|
-          content = File.read p
+          content = File.read(p)
           css = SassCompiler.compile(content)
           basename = File.basename(p, '.scss') << '.css'
           fileout = File.join(Configuration.absolute_path(:dest), 'css', basename)
-          FileUtils.mkdir_p File.dirname(fileout)
+          FileUtils.mkdir_p(File.dirname(fileout))
           IO.write(fileout, css)
         end
       end
@@ -43,27 +38,30 @@ module Yaqueline
       end
 
       def render_pages
-        Files.pages.each { |p| render_page p }
+        Files.pages.each { |p| render_page(p) }
       end
 
-      def render_page page
-        puts "render page"
-        content = Renderer.render page
-        filename = File.join Configuration.absolute_path(:dest), page.path
-        publish_page filename, content
+      def render_page(page)
+        content = Renderer.render(page)
+        filename = new_filename(page.path)
+        publish_page(filename, content)
       end
 
       def render_posts
-        Files.posts.each { |p| render_post p }
+        Files.posts.each { |p| render_post(p) }
       end
 
-      def render_post post
-        puts "render post"
+      def render_post(post)
+        content = Renderer.render(post)
+        filename = new_filename(post.path)
+        publish_post(filename, content)
       end
 
       def copy_aux_files
-        Files.as_is.each do |p|
-        end
+        Files.as_is.each { |p| copy_aux_file(p) }
+      end
+
+      def copy_aux_file(file)
       end
 
     end # class << self
