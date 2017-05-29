@@ -11,7 +11,6 @@ begin
     p.description "Yaqueline, like Jekyll, is a blog-aware, static site generator in Ruby"
     p.syntax "yaqueline <subcommand> [options]"
 
-    p.option :config, "-c", "--config FILE", String, "Config file (defaults to ./_config.yml)"
     p.option :source, "-s", "--source [DIR]", String, "Source directory (defaults to ./)"
     p.option :dest, "-d", "--destination [DIR]", String, "Destination directory (defaults to ./_site)"
     p.option :plugins, "-p", "--plugins PLUGINS_DIR1[,PLUGINS_DIR2[,...]]", Array, "Plugins directory (defaults to ./_plugins)"
